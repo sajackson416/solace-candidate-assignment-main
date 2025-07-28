@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className} style={({width: "90%", margin: "0 auto"})}>{children}</body>
+      <body className={inter.className} >{children}</body>
     </html>
   );
 }

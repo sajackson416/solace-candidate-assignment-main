@@ -1,7 +1,7 @@
 "use client";
 
 import { Advocate } from "@/db/seed/advocates";
-import {ChangeEvent, useEffect, useState} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
@@ -48,46 +48,52 @@ export default function Home() {
   };
 
   return (
-    <main style={{ margin: "24px", width: "100%" }}>
-      <h1 className="text-2xl font-bold mb-8">Solace Advocates</h1>
-
-      <div>
-        <p className="text-lg mb-2">Search</p>
-        <input id="search-input" style={{ border: "1px solid black" }} className="p-1 rounded-md mb-16" onChange={onChange} />
-        {searchTerm && <button style={{ marginLeft: "10px" }} className="bg-gray-500 text-white p-1 rounded-md" onClick={onClick}>Clear</button>}
-      </div>
-      <table style={{ width: "100%", margin: "0 auto" }}>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>City</th>
-            <th>Degree</th>
-            <th>Specialties</th>
-            <th>Years of Experience</th>
-            <th>Phone Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredAdvocates.map((advocate) => {
-            return (
-              <tr key={advocate.phoneNumber}>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s) => (
-                    <div key={s}>{s}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
+    <div>
+      <header className="bg-primary p-4">
+        <h1>Solace Advocates</h1>
+      </header>
+      <main className="my-8" style={({width: "90%", margin: "0 auto", marginTop: "100px"})}>
+        <div>
+          <p className="text-lg mb-2">Search</p>
+          <input id="search-input"
+            onChange={onChange} />
+          {searchTerm && <button onClick={onClick}>Clear</button>}
+        </div>
+        <div className="table-wrapper">
+          <table style={{ width: "100%", margin: "0 auto" }}>
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>City</th>
+                <th>Degree</th>
+                <th>Specialties</th>
+                <th>Years of Experience</th>
+                <th>Phone Number</th>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </main>
+            </thead>
+            <tbody>
+              {filteredAdvocates.map((advocate) => {
+                return (
+                  <tr key={advocate.phoneNumber}>
+                    <td>{advocate.firstName}</td>
+                    <td>{advocate.lastName}</td>
+                    <td>{advocate.city}</td>
+                    <td>{advocate.degree}</td>
+                    <td>
+                      {advocate.specialties.map((s) => (
+                        <div key={s}>{s}</div>
+                      ))}
+                    </td>
+                    <td>{advocate.yearsOfExperience}</td>
+                    <td>{advocate.phoneNumber}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
   );
 }
