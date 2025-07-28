@@ -2,18 +2,28 @@
 
 import { Advocate } from "@/db/seed/advocates";
 import { ChangeEvent, useEffect, useState } from "react";
+import { Pagination } from "./api/advocates/route";
 
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
   const [filteredAdvocates, setFilteredAdvocates] = useState<Advocate[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [pagination, setPagination] = useState<Pagination>({
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 0,
+    itemsPerPage: 0,
+    hasNextPage: false,
+    hasPreviousPage: false,
+  });
 
   useEffect(() => {
     console.log("fetching advocates...");
-    fetch("/api/advocates").then((response) => {
+    fetch("/api/advocates?page=1").then((response) => {
       response.json().then((jsonResponse) => {
         setAdvocates(jsonResponse.data);
         setFilteredAdvocates(jsonResponse.data);
+        setPagination(jsonResponse.pagination);
       });
     });
   }, []);
@@ -47,17 +57,28 @@ export default function Home() {
     }
   };
 
+  const setPage = (page: number) => {
+    fetch(`/api/advocates?page=${page}`).then((response) => {
+      response.json().then((jsonResponse) => {
+        setAdvocates(jsonResponse.data);
+        setFilteredAdvocates(jsonResponse.data);
+        setPagination(jsonResponse.pagination);
+      });
+    });
+  };
+
   return (
     <div>
       <header className="bg-primary p-4">
         <h1>Solace Advocates</h1>
       </header>
-      <main className="my-8" style={({width: "90%", margin: "0 auto", marginTop: "100px"})}>
+      <main className="my-24 mx-auto" style={({width: "90%",})}>
         <div>
           <p className="text-lg mb-2">Search</p>
           <input id="search-input"
             onChange={onChange} />
           {searchTerm && <button onClick={onClick}>Clear</button>}
+          <div><button onClick={() => setPage(pagination.currentPage - 1)}>Previous</button> {pagination.currentPage} of {pagination.totalPages} <button onClick={() => setPage(pagination.currentPage + 1)}>Next</button></div>
         </div>
         <div className="table-wrapper">
           <table style={{ width: "100%", margin: "0 auto" }}>
